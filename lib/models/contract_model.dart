@@ -1,4 +1,5 @@
 import 'package:hive/hive.dart';
+import 'dart:typed_data';
 import 'package:mkatabafix_app/models/contract_party_model.dart';
 
 part 'contract_model.g.dart';
@@ -23,6 +24,10 @@ class Contract {
   final List<Uint8List> photos;
   @HiveField(8)
   final DateTime createdAt;
+  @HiveField(9)
+  final String? templateId; // Added templateId
+  @HiveField(10)
+  final Map<String, dynamic>? data; // Added data property
 
   Contract({
     required this.id,
@@ -34,5 +39,7 @@ class Contract {
     this.logo,
     this.photos = const [],
     required this.createdAt,
+    this.templateId, // Added to constructor
+    this.data, // Added to constructor
   });
 }

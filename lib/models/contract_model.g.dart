@@ -20,19 +20,22 @@ class ContractAdapter extends TypeAdapter<Contract> {
       id: fields[0] as String,
       title: fields[1] as String,
       type: fields[2] as String,
-      parties: (fields[3] as List).cast<InvalidType>(),
+      parties: (fields[3] as List).cast<ContractParty>(),
       fields: (fields[4] as Map).cast<String, dynamic>(),
-      signatures: (fields[5] as Map).cast<String, InvalidType>(),
-      logo: fields[6] as InvalidType,
-      photos: (fields[7] as List).cast<InvalidType>(),
+      signatures: (fields[5] as Map)
+          .map((dynamic k, dynamic v) => MapEntry(k as String, v as Uint8List)),
+      logo: fields[6] as Uint8List?,
+      photos: (fields[7] as List).cast<Uint8List>(),
       createdAt: fields[8] as DateTime,
+      templateId: fields[9] as String?,
+      data: (fields[10] as Map?)?.cast<String, dynamic>(),
     );
   }
 
   @override
   void write(BinaryWriter writer, Contract obj) {
     writer
-      ..writeByte(9)
+      ..writeByte(11)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -50,7 +53,11 @@ class ContractAdapter extends TypeAdapter<Contract> {
       ..writeByte(7)
       ..write(obj.photos)
       ..writeByte(8)
-      ..write(obj.createdAt);
+      ..write(obj.createdAt)
+      ..writeByte(9)
+      ..write(obj.templateId)
+      ..writeByte(10)
+      ..write(obj.data);
   }
 
   @override

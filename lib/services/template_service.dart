@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:mkatabafix_app/models/contract_template_model.dart'; // Assuming this path
+import 'package:mkatabafix_app/models/contract_field_model.dart';
 
 class TemplateService {
   Future<List<ContractTemplate>> loadTemplates() async {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io'; // For File
+import 'dart:typed_data';
 import 'package:mkatabafix_app/models/user_profile_model.dart'; // Assuming this path
 import 'package:hive_flutter/hive_flutter.dart'; // For Hive
 

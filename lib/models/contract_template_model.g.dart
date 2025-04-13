@@ -20,7 +20,7 @@ class ContractTemplateAdapter extends TypeAdapter<ContractTemplate> {
       id: fields[0] as String,
       title: fields[1] as String,
       type: fields[2] as String,
-      fields: (fields[3] as List).cast<InvalidType>(),
+      fields: (fields[3] as List).cast<ContractField>(),
     );
   }
 

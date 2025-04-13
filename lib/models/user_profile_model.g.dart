@@ -18,7 +18,7 @@ class UserProfileAdapter extends TypeAdapter<UserProfile> {
     };
     return UserProfile(
       fullName: fields[0] as String,
-      profileImage: fields[1] as InvalidType,
+      profileImage: fields[1] as Uint8List?,
     );
   }
 

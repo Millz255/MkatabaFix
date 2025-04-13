@@ -1,4 +1,5 @@
 import 'package:hive/hive.dart';
+import 'dart:typed_data';
 
 part 'user_profile_model.g.dart';
 
