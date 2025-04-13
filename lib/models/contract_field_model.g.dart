@@ -22,13 +22,14 @@ class ContractFieldAdapter extends TypeAdapter<ContractField> {
       type: fields[2] as String,
       required: fields[3] as bool,
       defaultValue: fields[4] as String?,
+      options: (fields[5] as List?)?.cast<String>(),
     );
   }
 
   @override
   void write(BinaryWriter writer, ContractField obj) {
     writer
-      ..writeByte(5)
+      ..writeByte(6)
       ..writeByte(0)
       ..write(obj.label)
       ..writeByte(1)
@@ -38,7 +39,9 @@ class ContractFieldAdapter extends TypeAdapter<ContractField> {
       ..writeByte(3)
       ..write(obj.required)
       ..writeByte(4)
-      ..write(obj.defaultValue);
+      ..write(obj.defaultValue)
+      ..writeByte(5)
+      ..write(obj.options);
   }
 
   @override

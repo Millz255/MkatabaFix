@@ -20,4 +20,13 @@ class ContractTemplate {
     required this.type,
     required this.fields,
   });
+
+  factory ContractTemplate.fromJson(Map<String, dynamic> json) {
+    return ContractTemplate(
+      id: json['id'],
+      title: json['title'],
+      type: json['type'],
+      fields: (json['fields'] as List).map((item) => ContractField.fromJson(item)).toList(),
+    );
+  }
 }

@@ -7,7 +7,6 @@ import 'package:intl/intl.dart';
 import 'package:mkatabafix_app/models/contract_template_model.dart';
 import 'package:mkatabafix_app/models/contract_model.dart'; // Assuming this path
 import 'package:uuid/uuid.dart'; // For generating unique contract IDs
-import 'package:intl/intl.dart'; // For date formatting
 
 class ContractScreen extends StatefulWidget {
   @override
@@ -147,7 +146,7 @@ class _ContractScreenState extends State<ContractScreen>
               const SizedBox(height: 20.0),
               Text(
                 'Contract Details',
-                style: theme.textTheme.headline6,
+                style: theme.textTheme.headlineSmall, // Changed headline6 to headlineSmall
               ),
               const SizedBox(height: 10.0),
               _buildCard(
@@ -219,10 +218,15 @@ class _ContractScreenState extends State<ContractScreen>
                     final contract = Contract(
                       id: contractId,
                       title: _selectedTemplate?.title ?? 'Custom Contract - $formattedDate',
+                      type: _selectedTemplate?.type ?? 'General', // Provided the 'type'
                       createdAt: now,
                       templateId: _selectedTemplate?.id,
                       data: formData,
-                      // Add other relevant data like parties, signatures, images
+                      fields: formData,
+                      parties: [], // Initialize parties as needed
+                      signatures: {},
+                      logo: null,
+                      photos: [],
                     );
 
                     await StorageHelper.saveContract(contract);

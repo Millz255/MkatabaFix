@@ -77,7 +77,8 @@ class _SettingsScreenState extends State<SettingsScreen>
         profileImage: imageBytes != null ? Uint8List.fromList(imageBytes) : _userProfile?.profileImage,
       );
 
-      await _userService.saveUserProfile(updatedProfile);
+      await _userService.saveUserProfile(fullName: updatedProfile.fullName!, profileImage: updatedProfile.profileImage);
+
       setState(() {
         _userProfile = updatedProfile; // Update local state
         _profileImage = null; // Reset picked image
@@ -106,21 +107,21 @@ class _SettingsScreenState extends State<SettingsScreen>
   Future<void> _openSupportEmail() async {
     const email = 'mgimwaemily@gmail.com';
     final Uri emailLaunchUri = Uri(
-      scheme: 'mailto',
-      path: email,
-      queryParameters: <String, String>{
+        scheme: 'mailto',
+        path: email,
+        queryParameters: <String, String>{
         'subject': 'MkatabaFix App Support Query',
-      }.toString(),
+        }, // Added the missing semicolon here
     );
 
     if (await canLaunchUrlString(emailLaunchUri.toString())) {
-      await launchUrlString(emailLaunchUri.toString());
+        await launchUrlString(emailLaunchUri.toString());
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Could not launch email app.')),
-      );
+        );
     }
-  }
+    }
 
   @override
   void dispose() {
@@ -186,7 +187,7 @@ class _SettingsScreenState extends State<SettingsScreen>
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text('Edit Profile', style: theme.textTheme.headline6),
+                    Text('Edit Profile', style: theme.textTheme.headlineSmall),
                     const SizedBox(height: 16.0),
                     GestureDetector(
                       onTap: () {

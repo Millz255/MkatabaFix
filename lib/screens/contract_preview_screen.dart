@@ -91,7 +91,7 @@ class _ContractPreviewScreenState extends State<ContractPreviewScreen>
               const SizedBox(height: 8.0),
               Text(
                 'Created on: $formattedDate',
-                style: theme.textTheme.caption,
+                style: theme.textTheme.bodySmall,
               ),
               const SizedBox(height: 12.0),
               Row(

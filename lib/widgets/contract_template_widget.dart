@@ -39,7 +39,7 @@ class ContractTemplateWidget extends StatelessWidget {
               const SizedBox(height: 8.0),
               Text(
                 template.type,
-                style: theme.textTheme.subtitle1,
+                style: theme.textTheme.titleMedium,
               ),
               // You can add a brief description or more details here if needed
             ],

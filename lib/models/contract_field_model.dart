@@ -14,6 +14,8 @@ class ContractField {
   final bool required;
   @HiveField(4)
   final String? defaultValue;
+  @HiveField(5)
+  final List<String>? options; // Added options property
 
   ContractField({
     required this.label,
@@ -21,5 +23,17 @@ class ContractField {
     required this.type,
     this.required = false,
     this.defaultValue,
+    this.options, // Added to constructor
   });
+
+  factory ContractField.fromJson(Map<String, dynamic> json) {
+    return ContractField(
+      label: json['label'],
+      key: json['key'],
+      type: json['type'],
+      required: json['required'] ?? false,
+      defaultValue: json['defaultValue'],
+      options: (json['options'] as List<dynamic>?)?.cast<String>(), // Parse options from JSON
+    );
+  }
 }

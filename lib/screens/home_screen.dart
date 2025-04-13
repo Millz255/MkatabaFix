@@ -92,7 +92,7 @@ class _HomeScreenState extends State<HomeScreen>
                         const SizedBox(height: 4.0),
                         Text(
                           'Ready to create a new contract?',
-                          style: Theme.of(context).textTheme.subtitle1,
+                          style: Theme.of(context).textTheme.titleMedium,
                         ),
                       ],
                     ),
