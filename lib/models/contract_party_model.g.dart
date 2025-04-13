@@ -8,7 +8,7 @@ part of 'contract_party_model.dart';
 
 class ContractPartyAdapter extends TypeAdapter<ContractParty> {
   @override
-  final int typeId = 2;
+  final int typeId = 3;
 
   @override
   ContractParty read(BinaryReader reader) {
@@ -18,9 +18,9 @@ class ContractPartyAdapter extends TypeAdapter<ContractParty> {
     };
     return ContractParty(
       fullName: fields[0] as String,
-      phone: fields[1] as String,
-      address: fields[2] as String,
-      role: fields[3] as String,
+      phone: fields[1] as String?,
+      address: fields[2] as String?,
+      role: fields[3] as String?,
     );
   }
 

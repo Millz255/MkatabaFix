@@ -8,7 +8,7 @@ part of 'contract_field_model.dart';
 
 class ContractFieldAdapter extends TypeAdapter<ContractField> {
   @override
-  final int typeId = 4;
+  final int typeId = 5;
 
   @override
   ContractField read(BinaryReader reader) {
