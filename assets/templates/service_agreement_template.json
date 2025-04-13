@@ -1,1 +1,91 @@
-ECHO is on.
+{
+    "id": "service_agreement_template",
+    "title": "Service Agreement",
+    "type": "Service Agreement",
+    "fields": [
+      {
+        "label": "Client Name",
+        "key": "client_name",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Client Address",
+        "key": "client_address",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Service Provider Name",
+        "key": "provider_name",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Service Provider Address",
+        "key": "provider_address",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Description of Services",
+        "key": "services_description",
+        "type": "TextArea",
+        "required": true
+      },
+      {
+        "label": "Agreement Start Date",
+        "key": "start_date",
+        "type": "Date",
+        "required": true
+      },
+      {
+        "label": "Agreement End Date",
+        "key": "end_date",
+        "type": "Date"
+      },
+      {
+        "label": "Payment Amount/Rate",
+        "key": "payment_amount",
+        "type": "Number",
+        "required": true
+      },
+      {
+        "label": "Payment Schedule",
+        "key": "payment_schedule",
+        "type": "Dropdown",
+        "options": ["Monthly", "Upon Completion", "Milestone-based"],
+        "required": true
+      },
+      {
+        "label": "Invoicing Procedure",
+        "key": "invoicing_procedure",
+        "type": "Text"
+      },
+      {
+        "label": "Client Passport Picture",
+        "key": "client_passport_picture",
+        "type": "Image"
+      },
+      {
+        "label": "Service Provider Representative Passport Picture",
+        "key": "provider_representative_passport_picture",
+        "type": "Image"
+      },
+      {
+        "label": "Optional Logo",
+        "key": "logo",
+        "type": "Image"
+      },
+      {
+        "label": "Client Signature",
+        "key": "client_signature",
+        "type": "Signature"
+      },
+      {
+        "label": "Service Provider Signature",
+        "key": "provider_signature",
+        "type": "Signature"
+      }
+    ]
+  }

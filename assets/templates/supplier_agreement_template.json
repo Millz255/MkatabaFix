@@ -1,1 +1,109 @@
-ECHO is on.
+{
+    "id": "supplier_agreement_template",
+    "title": "Supplier Agreement",
+    "type": "Supply Agreement",
+    "fields": [
+      {
+        "label": "Buyer Name",
+        "key": "buyer_name",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Buyer Address",
+        "key": "buyer_address",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Supplier Name",
+        "key": "supplier_name",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Supplier Address",
+        "key": "supplier_address",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Description of Goods/Services to be Supplied",
+        "key": "supply_description",
+        "type": "TextArea",
+        "required": true
+      },
+      {
+        "label": "Quantity/Units (Optional)",
+        "key": "quantity_units",
+        "type": "Text"
+      },
+      {
+        "label": "Specifications (Optional)",
+        "key": "specifications",
+        "type": "Text"
+      },
+      {
+        "label": "Price per Unit/Service",
+        "key": "unit_price",
+        "type": "Number",
+        "required": true
+      },
+      {
+        "label": "Total Price (Optional)",
+        "key": "total_price",
+        "type": "Number"
+      },
+      {
+        "label": "Payment Schedule",
+        "key": "payment_schedule",
+        "type": "Text"
+      },
+      {
+        "label": "Delivery Schedule",
+        "key": "delivery_schedule",
+        "type": "Text"
+      },
+      {
+        "label": "Delivery Location",
+        "key": "delivery_location",
+        "type": "Text"
+      },
+      {
+        "label": "Agreement Start Date",
+        "key": "start_date",
+        "type": "Date",
+        "required": true
+      },
+      {
+        "label": "Agreement End Date",
+        "key": "end_date",
+        "type": "Date"
+      },
+      {
+        "label": "Buyer Representative Passport Picture",
+        "key": "buyer_representative_passport_picture",
+        "type": "Image"
+      },
+      {
+        "label": "Supplier Representative Passport Picture",
+        "key": "supplier_representative_passport_picture",
+        "type": "Image"
+      },
+      {
+        "label": "Optional Logo",
+        "key": "logo",
+        "type": "Image"
+      },
+      {
+        "label": "Buyer Signature",
+        "key": "buyer_signature",
+        "type": "Signature"
+      },
+      {
+        "label": "Supplier Signature",
+        "key": "supplier_signature",
+        "type": "Signature"
+      }
+    ]
+  }

@@ -1,1 +1,116 @@
-ECHO is on.
+{
+    "id": "debt_repayment_agreement_template",
+    "title": "Debt Repayment Agreement",
+    "type": "Repayment Agreement",
+    "fields": [
+      {
+        "label": "Debtor Name",
+        "key": "debtor_name",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Debtor Address",
+        "key": "debtor_address",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Debtor ID/Passport Number",
+        "key": "debtor_id",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Creditor Name",
+        "key": "creditor_name",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Creditor Address",
+        "key": "creditor_address",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Creditor ID/Passport Number",
+        "key": "creditor_id",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Original Debt Amount",
+        "key": "original_debt_amount",
+        "type": "Number",
+        "required": true
+      },
+      {
+        "label": "Outstanding Balance",
+        "key": "outstanding_balance",
+        "type": "Number",
+        "required": true
+      },
+      {
+        "label": "Interest Rate (%) (Optional)",
+        "key": "interest_rate",
+        "type": "Number"
+      },
+      {
+        "label": "Total Repayment Amount",
+        "key": "total_repayment_amount",
+        "type": "Number",
+        "required": true
+      },
+      {
+        "label": "Repayment Schedule",
+        "key": "repayment_schedule",
+        "type": "Dropdown",
+        "options": ["Weekly", "Monthly", "Bi-Monthly"],
+        "required": true
+      },
+      {
+        "label": "Installment Amount",
+        "key": "installment_amount",
+        "type": "Number",
+        "required": true
+      },
+      {
+        "label": "First Repayment Date",
+        "key": "first_repayment_date",
+        "type": "Date",
+        "required": true
+      },
+      {
+        "label": "Final Repayment Date",
+        "key": "final_repayment_date",
+        "type": "Date",
+        "required": true
+      },
+      {
+        "label": "Debtor Passport Picture",
+        "key": "debtor_passport_picture",
+        "type": "Image"
+      },
+      {
+        "label": "Creditor Passport Picture",
+        "key": "creditor_passport_picture",
+        "type": "Image"
+      },
+      {
+        "label": "Optional Logo",
+        "key": "logo",
+        "type": "Image"
+      },
+      {
+        "label": "Debtor Signature",
+        "key": "debtor_signature",
+        "type": "Signature"
+      },
+      {
+        "label": "Creditor Signature",
+        "key": "creditor_signature",
+        "type": "Signature"
+      }
+    ]
+  }

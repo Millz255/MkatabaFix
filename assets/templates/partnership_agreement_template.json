@@ -1,1 +1,140 @@
-ECHO is on.
+{
+    "id": "partnership_agreement_template",
+    "title": "Partnership Agreement",
+    "type": "Business Agreement",
+    "fields": [
+      {
+        "label": "Partner 1 Name",
+        "key": "partner1_name",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Partner 1 Address",
+        "key": "partner1_address",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Partner 1 ID/Passport Number",
+        "key": "partner1_id",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Partner 2 Name",
+        "key": "partner2_name",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Partner 2 Address",
+        "key": "partner2_address",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Partner 2 ID/Passport Number",
+        "key": "partner2_id",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Partnership Name",
+        "key": "partnership_name",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Nature of Business",
+        "key": "business_nature",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Principal Place of Business",
+        "key": "business_address",
+        "type": "Text"
+      },
+      {
+        "label": "Effective Date",
+        "key": "effective_date",
+        "type": "Date"
+      },
+      {
+        "label": "Partner 1 Capital Contribution",
+        "key": "partner1_contribution",
+        "type": "Text"
+      },
+      {
+        "label": "Partner 2 Capital Contribution",
+        "key": "partner2_contribution",
+        "type": "Text"
+      },
+      {
+        "label": "Profit Sharing Percentage",
+        "key": "profit_sharing",
+        "type": "Text"
+      },
+      {
+        "label": "Loss Sharing Percentage",
+        "key": "loss_sharing",
+        "type": "Text"
+      },
+      {
+        "label": "Responsibilities of Partner 1",
+        "key": "partner1_responsibilities",
+        "type": "Text"
+      },
+      {
+        "label": "Responsibilities of Partner 2",
+        "key": "partner2_responsibilities",
+        "type": "Text"
+      },
+      {
+        "label": "Decision Making Process",
+        "key": "decision_making",
+        "type": "Text"
+      },
+      {
+        "label": "Term of Partnership",
+        "key": "term",
+        "type": "Text"
+      },
+      {
+        "label": "Conditions for Dissolution",
+        "key": "dissolution_conditions",
+        "type": "Text"
+      },
+      {
+        "label": "Governing Law",
+        "key": "governing_law",
+        "type": "Text"
+      },
+      {
+        "label": "Partner 1 Passport Picture",
+        "key": "partner1_passport_picture",
+        "type": "Image"
+      },
+      {
+        "label": "Partner 2 Passport Picture",
+        "key": "partner2_passport_picture",
+        "type": "Image"
+      },
+      {
+        "label": "Optional Logo",
+        "key": "logo",
+        "type": "Image"
+      },
+      {
+        "label": "Partner 1 Signature",
+        "key": "partner1_signature",
+        "type": "Signature"
+      },
+      {
+        "label": "Partner 2 Signature",
+        "key": "partner2_signature",
+        "type": "Signature"
+      }
+    ]
+  }

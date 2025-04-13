@@ -1,1 +1,98 @@
-ECHO is on.
+{
+    "id": "loan_contract_template",
+    "title": "Loan Contract",
+    "type": "Loan Agreement",
+    "fields": [
+      {
+        "label": "Borrower Name",
+        "key": "borrower_name",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Borrower Address",
+        "key": "borrower_address",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Borrower ID/Passport Number",
+        "key": "borrower_id",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Lender Name",
+        "key": "lender_name",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Lender Address",
+        "key": "lender_address",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Lender ID/Passport Number",
+        "key": "lender_id",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Loan Amount",
+        "key": "loan_amount",
+        "type": "Number",
+        "required": true
+      },
+      {
+        "label": "Interest Rate (%) (Optional)",
+        "key": "interest_rate",
+        "type": "Number"
+      },
+      {
+        "label": "Repayment Term (e.g., in days, months)",
+        "key": "repayment_term",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Repayment Schedule",
+        "key": "repayment_schedule",
+        "type": "Dropdown",
+        "options": ["Single Payment", "Installments"],
+        "required": true
+      },
+      {
+        "label": "Due Date/First Payment Date",
+        "key": "due_date",
+        "type": "Date",
+        "required": true
+      },
+      {
+        "label": "Borrower Passport Picture",
+        "key": "borrower_passport_picture",
+        "type": "Image"
+      },
+      {
+        "label": "Lender Passport Picture",
+        "key": "lender_passport_picture",
+        "type": "Image"
+      },
+      {
+        "label": "Optional Logo",
+        "key": "logo",
+        "type": "Image"
+      },
+      {
+        "label": "Borrower Signature",
+        "key": "borrower_signature",
+        "type": "Signature"
+      },
+      {
+        "label": "Lender Signature",
+        "key": "lender_signature",
+        "type": "Signature"
+      }
+    ]
+  }

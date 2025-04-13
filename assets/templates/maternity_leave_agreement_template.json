@@ -1,1 +1,96 @@
-ECHO is on.
+{
+    "id": "maternity_leave_agreement_template",
+    "title": "Maternity Leave Agreement",
+    "type": "Leave Agreement",
+    "fields": [
+      {
+        "label": "Employer Name",
+        "key": "employer_name",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Employer Address",
+        "key": "employer_address",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Employee Name",
+        "key": "employee_name",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Employee Address",
+        "key": "employee_address",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Employee ID/Passport Number",
+        "key": "employee_id",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Expected Date of Confinement (EDC)",
+        "key": "edc",
+        "type": "Date"
+      },
+      {
+        "label": "Start Date of Maternity Leave",
+        "key": "leave_start_date",
+        "type": "Date",
+        "required": true
+      },
+      {
+        "label": "End Date of Maternity Leave",
+        "key": "leave_end_date",
+        "type": "Date",
+        "required": true
+      },
+      {
+        "label": "Duration of Leave (e.g., in weeks)",
+        "key": "leave_duration",
+        "type": "Text"
+      },
+      {
+        "label": "Paid/Unpaid Leave",
+        "key": "leave_type",
+        "type": "Dropdown",
+        "options": ["Paid", "Unpaid", "Partially Paid"],
+        "required": true
+      },
+      {
+        "label": "Specific Conditions or Benefits (Optional)",
+        "key": "conditions_benefits",
+        "type": "Text"
+      },
+      {
+        "label": "Employer Representative Passport Picture",
+        "key": "employer_representative_passport_picture",
+        "type": "Image"
+      },
+      {
+        "label": "Employee Passport Picture",
+        "key": "employee_passport_picture",
+        "type": "Image"
+      },
+      {
+        "label": "Optional Logo",
+        "key": "logo",
+        "type": "Image"
+      },
+      {
+        "label": "Employer Representative Signature",
+        "key": "employer_representative_signature",
+        "type": "Signature"
+      },
+      {
+        "label": "Employee Signature",
+        "key": "employee_signature",
+        "type": "Signature"
+      }
+    ]
+  }

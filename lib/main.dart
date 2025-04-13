@@ -1,8 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:mkatabafix_app/screens/onboarding_screen.dart';
+import 'package:mkatabafix_app/screens/home_screen.dart';
+import 'package:mkatabafix_app/screens/contract_screen.dart';
+import 'package:mkatabafix_app/screens/template_list_screen.dart';
+import 'package:mkatabafix_app/screens/contract_preview_screen.dart';
+import 'package:mkatabafix_app/screens/settings_screen.dart';
+import 'package:mkatabafix_app/models/user_profile_model.dart'; // Import the model
+import 'package:mkatabafix_app/models/contract_model.dart'; // Assuming this import
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Hive.initFlutter();
+  Hive.registerAdapter(UserProfileAdapter()); // Register the UserProfile adapter
+  Hive.registerAdapter(ContractAdapter()); // Assuming you have a ContractAdapter
+  await Hive.openBox<UserProfile>('userProfileBox');
+  await Hive.openBox<Contract>('contractsBox'); // Open the contracts box
+
   runApp(const MyApp());
 }
+
 
 // Custom MaterialColor for Dark Green
 const MaterialColor darkGreenSwatch = MaterialColor(
@@ -79,6 +96,10 @@ class MyApp extends StatelessWidget {
         fontWeight: FontWeight.w500,
         color: isDark ? Colors.white : Colors.black87,
       ),
+      subtitle1: TextStyle( // Added subtitle1 for consistency
+        fontSize: 16,
+        color: isDark ? Colors.grey[400] : Colors.grey[600],
+      ),
     );
   }
 
@@ -89,49 +110,53 @@ class MyApp extends StatelessWidget {
       theme: _buildTheme(Brightness.light),
       darkTheme: _buildTheme(Brightness.dark),
       themeMode: ThemeMode.system,
-      home: const MyHomePage(title: 'Mkataba Fix Home Page'),
+      home: const InitialScreen(), // Use InitialScreen to check for existing profile
+      routes: {
+        '/home': (context) => HomeScreen(),
+        '/onboarding': (context) => OnboardingScreen(),
+        '/new_contract': (context) => ContractScreen(),
+        '/templates': (context) => TemplateListScreen(),
+        '/preview': (context) => ContractPreviewScreen(),
+        '/settings': (context) => SettingsScreen(),
+      },
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
+class InitialScreen extends StatefulWidget {
+  const InitialScreen({super.key});
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<InitialScreen> createState() => _InitialScreenState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+class _InitialScreenState extends State<InitialScreen> {
+  @override
+  void initState() {
+    super.initState();
+    _checkUserProfile();
+  }
 
-  void _incrementCounter() {
-    setState(() => _counter++);
+  Future<void> _checkUserProfile() async {
+    final userProfileBox = Hive.box<UserProfile>('userProfileBox');
+    final userProfile = userProfileBox.get('user');
+
+    // Simulate a delay for a smoother transition
+    await Future.delayed(const Duration(milliseconds: 500));
+
+    if (userProfile != null) {
+      Navigator.pushReplacementNamed(context, '/home');
+    } else {
+      Navigator.pushReplacementNamed(context, '/onboarding');
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
+    // You can show a splash screen or loading indicator here
+    return const Scaffold(
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text('You have pushed the button this many times:'),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.displayMedium,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
+        child: CircularProgressIndicator(),
       ),
     );
   }

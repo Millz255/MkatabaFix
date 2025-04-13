@@ -1,1 +1,109 @@
-ECHO is on.
+{
+    "id": "tenancy_agreement_commercial_template",
+    "title": "Commercial Tenancy Agreement",
+    "type": "Lease Agreement",
+    "fields": [
+      {
+        "label": "Landlord Name",
+        "key": "landlord_name",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Landlord Address",
+        "key": "landlord_address",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Tenant Name",
+        "key": "tenant_name",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Tenant Address",
+        "key": "tenant_address",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Property Address",
+        "key": "property_address",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Unit/Suite Number (Optional)",
+        "key": "unit_number",
+        "type": "Text"
+      },
+      {
+        "label": "Description of Premises",
+        "key": "premises_description",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Lease Start Date",
+        "key": "lease_start_date",
+        "type": "Date",
+        "required": true
+      },
+      {
+        "label": "Lease End Date",
+        "key": "lease_end_date",
+        "type": "Date",
+        "required": true
+      },
+      {
+        "label": "Monthly Rent",
+        "key": "monthly_rent",
+        "type": "Number",
+        "required": true
+      },
+      {
+        "label": "Security Deposit",
+        "key": "security_deposit",
+        "type": "Number",
+        "required": true
+      },
+      {
+        "label": "Payment Schedule",
+        "key": "payment_schedule",
+        "type": "Dropdown",
+        "options": ["Monthly", "Quarterly"],
+        "required": true
+      },
+      {
+        "label": "Permitted Use of Premises",
+        "key": "permitted_use",
+        "type": "Text"
+      },
+      {
+        "label": "Landlord Passport Picture",
+        "key": "landlord_passport_picture",
+        "type": "Image"
+      },
+      {
+        "label": "Tenant Representative Passport Picture",
+        "key": "tenant_representative_passport_picture",
+        "type": "Image"
+      },
+      {
+        "label": "Optional Logo",
+        "key": "logo",
+        "type": "Image"
+      },
+      {
+        "label": "Landlord Signature",
+        "key": "landlord_signature",
+        "type": "Signature"
+      },
+      {
+        "label": "Tenant Signature",
+        "key": "tenant_signature",
+        "type": "Signature"
+      }
+    ]
+  }

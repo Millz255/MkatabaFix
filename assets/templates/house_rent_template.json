@@ -1,1 +1,126 @@
-ECHO is on.
+{
+    "id": "house_rent_template",
+    "title": "House Rental Agreement",
+    "type": "Lease Agreement",
+    "fields": [
+      {
+        "label": "Landlord Name",
+        "key": "landlord_name",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Landlord Address",
+        "key": "landlord_address",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Landlord ID/Passport Number",
+        "key": "landlord_id",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Landlord Phone Number",
+        "key": "landlord_phone_number",
+        "type": "Text"
+      },
+      {
+        "label": "Tenant Name",
+        "key": "tenant_name",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Tenant Address",
+        "key": "tenant_address",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Tenant ID/Passport Number",
+        "key": "tenant_id",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Tenant Phone Number",
+        "key": "tenant_phone_number",
+        "type": "Text"
+      },
+      {
+        "label": "Property Address",
+        "key": "property_address",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Apartment/Unit Number (Optional)",
+        "key": "apartment_number",
+        "type": "Text"
+      },
+      {
+        "label": "Lease Start Date",
+        "key": "lease_start_date",
+        "type": "Date",
+        "required": true
+      },
+      {
+        "label": "Lease End Date",
+        "key": "lease_end_date",
+        "type": "Date",
+        "required": true
+      },
+      {
+        "label": "Monthly Rent",
+        "key": "monthly_rent",
+        "type": "Number",
+        "required": true
+      },
+      {
+        "label": "Security Deposit",
+        "key": "security_deposit",
+        "type": "Number",
+        "required": true
+      },
+      {
+        "label": "Payment Schedule",
+        "key": "payment_schedule",
+        "type": "Dropdown",
+        "options": ["Monthly", "Annually"],
+        "required": true
+      },
+      {
+        "label": "First Payment Date",
+        "key": "first_payment_date",
+        "type": "Date",
+        "required": true
+      },
+      {
+        "label": "Landlord Passport Picture",
+        "key": "landlord_passport_picture",
+        "type": "Image"
+      },
+      {
+        "label": "Tenant Passport Picture",
+        "key": "tenant_passport_picture",
+        "type": "Image"
+      },
+      {
+        "label": "Optional Logo",
+        "key": "logo",
+        "type": "Image"
+      },
+      {
+        "label": "Landlord Signature",
+        "key": "landlord_signature",
+        "type": "Signature"
+      },
+      {
+        "label": "Tenant Signature",
+        "key": "tenant_signature",
+        "type": "Signature"
+      }
+    ]
+  }

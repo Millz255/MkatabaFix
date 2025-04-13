@@ -1,1 +1,108 @@
-ECHO is on.
+{
+    "id": "freelance_agreement_template",
+    "title": "Freelance Agreement",
+    "type": "Service Agreement",
+    "fields": [
+      {
+        "label": "Client Name",
+        "key": "client_name",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Client Address",
+        "key": "client_address",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Client Representative Name (Optional)",
+        "key": "client_representative_name",
+        "type": "Text"
+      },
+      {
+        "label": "Freelancer Name",
+        "key": "freelancer_name",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Freelancer Address",
+        "key": "freelancer_address",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Freelancer ID/Passport Number",
+        "key": "freelancer_id",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Project Title/Description",
+        "key": "project_title",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Scope of Work",
+        "key": "scope_of_work",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Deliverables",
+        "key": "deliverables",
+        "type": "Text"
+      },
+      {
+        "label": "Timeline/Deadline",
+        "key": "deadline",
+        "type": "Date"
+      },
+      {
+        "label": "Payment Amount/Rate",
+        "key": "payment_amount",
+        "type": "Number",
+        "required": true
+      },
+      {
+        "label": "Payment Schedule",
+        "key": "payment_schedule",
+        "type": "Dropdown",
+        "options": ["Upon Completion", "Milestone-based", "Monthly"],
+        "required": true
+      },
+      {
+        "label": "Currency",
+        "key": "currency",
+        "type": "Text",
+        "defaultValue": "USD"
+      },
+      {
+        "label": "Client Representative Passport Picture",
+        "key": "client_representative_passport_picture",
+        "type": "Image"
+      },
+      {
+        "label": "Freelancer Passport Picture",
+        "key": "freelancer_passport_picture",
+        "type": "Image"
+      },
+      {
+        "label": "Optional Logo",
+        "key": "logo",
+        "type": "Image"
+      },
+      {
+        "label": "Client Signature",
+        "key": "client_signature",
+        "type": "Signature"
+      },
+      {
+        "label": "Freelancer Signature",
+        "key": "freelancer_signature",
+        "type": "Signature"
+      }
+    ]
+  }

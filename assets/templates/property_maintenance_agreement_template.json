@@ -1,1 +1,112 @@
-ECHO is on.
+{
+    "id": "property_maintenance_agreement_template",
+    "title": "Property Maintenance Agreement",
+    "type": "Service Agreement",
+    "fields": [
+      {
+        "label": "Property Owner Name",
+        "key": "owner_name",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Property Owner Address",
+        "key": "owner_address",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Maintenance Contractor Name",
+        "key": "contractor_name",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Maintenance Contractor Address",
+        "key": "contractor_address",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Property Address",
+        "key": "property_address",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Description of Property (Optional)",
+        "key": "property_description",
+        "type": "Text"
+      },
+      {
+        "label": "Maintenance Services to be Provided",
+        "key": "maintenance_services",
+        "type": "TextArea",
+        "required": true
+      },
+      {
+        "label": "Schedule of Services",
+        "key": "service_schedule",
+        "type": "Text"
+      },
+      {
+        "label": "Payment Amount/Rate",
+        "key": "payment_amount",
+        "type": "Number",
+        "required": true
+      },
+      {
+        "label": "Payment Frequency",
+        "key": "payment_frequency",
+        "type": "Dropdown",
+        "options": ["Monthly", "Quarterly", "Per Service"],
+        "required": true
+      },
+      {
+        "label": "Invoicing Procedure",
+        "key": "invoicing_procedure",
+        "type": "Text"
+      },
+      {
+        "label": "Agreement Start Date",
+        "key": "start_date",
+        "type": "Date",
+        "required": true
+      },
+      {
+        "label": "Agreement End Date",
+        "key": "end_date",
+        "type": "Date"
+      },
+      {
+        "label": "Renewal Terms (Optional)",
+        "key": "renewal_terms",
+        "type": "Text"
+      },
+      {
+        "label": "Property Owner Passport Picture",
+        "key": "owner_passport_picture",
+        "type": "Image"
+      },
+      {
+        "label": "Maintenance Contractor Representative Passport Picture",
+        "key": "contractor_representative_passport_picture",
+        "type": "Image"
+      },
+      {
+        "label": "Optional Logo",
+        "key": "logo",
+        "type": "Image"
+      },
+      {
+        "label": "Property Owner Signature",
+        "key": "owner_signature",
+        "type": "Signature"
+      },
+      {
+        "label": "Maintenance Contractor Signature",
+        "key": "contractor_signature",
+        "type": "Signature"
+      }
+    ]
+  }

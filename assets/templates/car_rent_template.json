@@ -1,1 +1,132 @@
-ECHO is on.
+{
+    "id": "car_rent_template",
+    "title": "Car Rental Agreement",
+    "type": "Rental Agreement",
+    "fields": [
+      {
+        "label": "Renter Name",
+        "key": "renter_name",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Renter Address",
+        "key": "renter_address",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Renter Driver's License Number",
+        "key": "renter_license_number",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Renter Phone Number",
+        "key": "renter_phone_number",
+        "type": "Text"
+      },
+      {
+        "label": "Company Name",
+        "key": "company_name",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Company Address",
+        "key": "company_address",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Company Representative Name",
+        "key": "company_representative_name",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Vehicle Make",
+        "key": "vehicle_make",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Vehicle Model",
+        "key": "vehicle_model",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Vehicle Year",
+        "key": "vehicle_year",
+        "type": "Number",
+        "required": true
+      },
+      {
+        "label": "License Plate Number",
+        "key": "license_plate_number",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "VIN (Vehicle Identification Number)",
+        "key": "vin",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Rental Start Date",
+        "key": "rental_start_date",
+        "type": "Date",
+        "required": true
+      },
+      {
+        "label": "Rental End Date",
+        "key": "rental_end_date",
+        "type": "Date",
+        "required": true
+      },
+      {
+        "label": "Daily Rate",
+        "key": "daily_rate",
+        "type": "Number",
+        "required": true
+      },
+      {
+        "label": "Total Rental Fee",
+        "key": "total_rental_fee",
+        "type": "Number",
+        "required": true
+      },
+      {
+        "label": "Security Deposit",
+        "key": "security_deposit",
+        "type": "Number"
+      },
+      {
+        "label": "Renter Passport Picture",
+        "key": "renter_passport_picture",
+        "type": "Image"
+      },
+      {
+        "label": "Company Representative Passport Picture",
+        "key": "company_representative_passport_picture",
+        "type": "Image"
+      },
+      {
+        "label": "Optional Logo",
+        "key": "logo",
+        "type": "Image"
+      },
+      {
+        "label": "Renter Signature",
+        "key": "renter_signature",
+        "type": "Signature"
+      },
+      {
+        "label": "Company Representative Signature",
+        "key": "company_representative_signature",
+        "type": "Signature"
+      }
+    ]
+  }

@@ -1,1 +1,105 @@
-ECHO is on.
+{
+    "id": "investment_agreement_template",
+    "title": "Investment Agreement",
+    "type": "Investment Agreement",
+    "fields": [
+      {
+        "label": "Investor Name",
+        "key": "investor_name",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Investor Address",
+        "key": "investor_address",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Investor ID/Passport Number",
+        "key": "investor_id",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Company/Project Name",
+        "key": "company_project_name",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Company/Project Address",
+        "key": "company_project_address",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Nature of Business/Project",
+        "key": "business_nature",
+        "type": "Text"
+      },
+      {
+        "label": "Investment Amount",
+        "key": "investment_amount",
+        "type": "Number",
+        "required": true
+      },
+      {
+        "label": "Type of Investment",
+        "key": "investment_type",
+        "type": "Dropdown",
+        "options": ["Equity", "Debt", "Convertible Note"],
+        "required": true
+      },
+      {
+        "label": "Percentage of Ownership/Interest (Optional)",
+        "key": "ownership_interest",
+        "type": "Number"
+      },
+      {
+        "label": "Valuation of Company/Project (Optional)",
+        "key": "valuation",
+        "type": "Number"
+      },
+      {
+        "label": "Return on Investment (Optional)",
+        "key": "return_on_investment",
+        "type": "Text"
+      },
+      {
+        "label": "Exit Strategy (Optional)",
+        "key": "exit_strategy",
+        "type": "Text"
+      },
+      {
+        "label": "Governing Law",
+        "key": "governing_law",
+        "type": "Text"
+      },
+      {
+        "label": "Investor Passport Picture",
+        "key": "investor_passport_picture",
+        "type": "Image"
+      },
+      {
+        "label": "Company Representative Passport Picture",
+        "key": "company_representative_passport_picture",
+        "type": "Image"
+      },
+      {
+        "label": "Optional Logo",
+        "key": "logo",
+        "type": "Image"
+      },
+      {
+        "label": "Investor Signature",
+        "key": "investor_signature",
+        "type": "Signature"
+      },
+      {
+        "label": "Company Representative Signature",
+        "key": "company_representative_signature",
+        "type": "Signature"
+      }
+    ]
+  }

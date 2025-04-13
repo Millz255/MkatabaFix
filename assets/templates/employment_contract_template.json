@@ -1,1 +1,109 @@
-ECHO is on.
+{
+    "id": "employment_contract_template",
+    "title": "Employment Contract",
+    "type": "Employment Agreement",
+    "fields": [
+      {
+        "label": "Employer Name",
+        "key": "employer_name",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Employer Address",
+        "key": "employer_address",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Employer Representative Name",
+        "key": "employer_representative_name",
+        "type": "Text"
+      },
+      {
+        "label": "Employee Name",
+        "key": "employee_name",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Employee Address",
+        "key": "employee_address",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Employee ID/Passport Number",
+        "key": "employee_id",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Job Title",
+        "key": "job_title",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Start Date",
+        "key": "start_date",
+        "type": "Date",
+        "required": true
+      },
+      {
+        "label": "Employment Type",
+        "key": "employment_type",
+        "type": "Dropdown",
+        "options": ["Full-time", "Part-time", "Contract", "Temporary"],
+        "required": true
+      },
+      {
+        "label": "Salary/Wage",
+        "key": "salary_wage",
+        "type": "Number",
+        "required": true
+      },
+      {
+        "label": "Payment Frequency",
+        "key": "payment_frequency",
+        "type": "Dropdown",
+        "options": ["Monthly", "Bi-weekly", "Weekly"],
+        "required": true
+      },
+      {
+        "label": "Working Hours",
+        "key": "working_hours",
+        "type": "Text"
+      },
+      {
+        "label": "Probation Period (Optional)",
+        "key": "probation_period",
+        "type": "Text"
+      },
+      {
+        "label": "Employer Representative Passport Picture",
+        "key": "employer_representative_passport_picture",
+        "type": "Image"
+      },
+      {
+        "label": "Employee Passport Picture",
+        "key": "employee_passport_picture",
+        "type": "Image"
+      },
+      {
+        "label": "Optional Logo",
+        "key": "logo",
+        "type": "Image"
+      },
+      {
+        "label": "Employer Signature",
+        "key": "employer_signature",
+        "type": "Signature"
+      },
+      {
+        "label": "Employee Signature",
+        "key": "employee_signature",
+        "type": "Signature"
+      }
+    ]
+  }

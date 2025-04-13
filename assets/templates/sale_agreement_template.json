@@ -1,1 +1,98 @@
-ECHO is on.
+{
+    "id": "sale_agreement_template",
+    "title": "Sale Agreement",
+    "type": "Sales Agreement",
+    "fields": [
+      {
+        "label": "Seller Name",
+        "key": "seller_name",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Seller Address",
+        "key": "seller_address",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Buyer Name",
+        "key": "buyer_name",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Buyer Address",
+        "key": "buyer_address",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Description of Item/Property",
+        "key": "item_description",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Quantity (Optional)",
+        "key": "quantity",
+        "type": "Number"
+      },
+      {
+        "label": "Identification Number (e.g., VIN, Serial Number - Optional)",
+        "key": "identification_number",
+        "type": "Text"
+      },
+      {
+        "label": "Sale Price",
+        "key": "sale_price",
+        "type": "Number",
+        "required": true
+      },
+      {
+        "label": "Payment Schedule",
+        "key": "payment_schedule",
+        "type": "Text"
+      },
+      {
+        "label": "Deposit Amount (Optional)",
+        "key": "deposit_amount",
+        "type": "Number"
+      },
+      {
+        "label": "Delivery/Transfer Date",
+        "key": "delivery_date",
+        "type": "Date"
+      },
+      {
+        "label": "Location of Delivery/Transfer",
+        "key": "delivery_location",
+        "type": "Text"
+      },
+      {
+        "label": "Seller Passport Picture",
+        "key": "seller_passport_picture",
+        "type": "Image"
+      },
+      {
+        "label": "Buyer Passport Picture",
+        "key": "buyer_passport_picture",
+        "type": "Image"
+      },
+      {
+        "label": "Optional Logo",
+        "key": "logo",
+        "type": "Image"
+      },
+      {
+        "label": "Seller Signature",
+        "key": "seller_signature",
+        "type": "Signature"
+      },
+      {
+        "label": "Buyer Signature",
+        "key": "buyer_signature",
+        "type": "Signature"
+      }
+    ]
+  }

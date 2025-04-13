@@ -1,1 +1,89 @@
-ECHO is on.
+{
+    "id": "nda_template",
+    "title": "Non-Disclosure Agreement (NDA)",
+    "type": "Confidentiality Agreement",
+    "fields": [
+      {
+        "label": "Disclosing Party Name",
+        "key": "disclosing_party_name",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Disclosing Party Address",
+        "key": "disclosing_party_address",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Receiving Party Name",
+        "key": "receiving_party_name",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Receiving Party Address",
+        "key": "receiving_party_address",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Purpose of Disclosure",
+        "key": "purpose",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Definition of Confidential Information",
+        "key": "confidential_information_definition",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Obligations of Receiving Party",
+        "key": "obligations",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Exclusions from Confidentiality",
+        "key": "exclusions",
+        "type": "Text"
+      },
+      {
+        "label": "Term of Agreement",
+        "key": "term",
+        "type": "Text"
+      },
+      {
+        "label": "Governing Law",
+        "key": "governing_law",
+        "type": "Text"
+      },
+      {
+        "label": "Disclosing Party Passport Picture",
+        "key": "disclosing_party_passport_picture",
+        "type": "Image"
+      },
+      {
+        "label": "Receiving Party Passport Picture",
+        "key": "receiving_party_passport_picture",
+        "type": "Image"
+      },
+      {
+        "label": "Optional Logo",
+        "key": "logo",
+        "type": "Image"
+      },
+      {
+        "label": "Disclosing Party Signature",
+        "key": "disclosing_party_signature",
+        "type": "Signature"
+      },
+      {
+        "label": "Receiving Party Signature",
+        "key": "receiving_party_signature",
+        "type": "Signature"
+      }
+    ]
+  }

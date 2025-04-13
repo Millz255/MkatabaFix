@@ -1,1 +1,96 @@
-ECHO is on.
+{
+    "id": "intellectual_property_agreement_template",
+    "title": "Intellectual Property Assignment Agreement",
+    "type": "IP Agreement",
+    "fields": [
+      {
+        "label": "Assignor (Creator) Name",
+        "key": "assignor_name",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Assignor Address",
+        "key": "assignor_address",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Assignee (Recipient) Name",
+        "key": "assignee_name",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Assignee Address",
+        "key": "assignee_address",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Type of IP",
+        "key": "ip_type",
+        "type": "Dropdown",
+        "options": ["Copyright", "Patent", "Trademark", "Trade Secret"],
+        "required": true
+      },
+      {
+        "label": "Description of IP",
+        "key": "ip_description",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Title of Work/Invention",
+        "key": "ip_title",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Registration Number (Optional)",
+        "key": "registration_number",
+        "type": "Text"
+      },
+      {
+        "label": "Date of Creation",
+        "key": "creation_date",
+        "type": "Date"
+      },
+      {
+        "label": "Scope of Assignment",
+        "key": "scope_of_assignment",
+        "type": "Text",
+        "required": true
+      },
+      {
+        "label": "Consideration/Payment (Optional)",
+        "key": "consideration",
+        "type": "Text"
+      },
+      {
+        "label": "Assignor Passport Picture",
+        "key": "assignor_passport_picture",
+        "type": "Image"
+      },
+      {
+        "label": "Assignee Passport Picture",
+        "key": "assignee_passport_picture",
+        "type": "Image"
+      },
+      {
+        "label": "Optional Logo",
+        "key": "logo",
+        "type": "Image"
+      },
+      {
+        "label": "Assignor Signature",
+        "key": "assignor_signature",
+        "type": "Signature"
+      },
+      {
+        "label": "Assignee Signature",
+        "key": "assignee_signature",
+        "type": "Signature"
+      }
+    ]
+  }
