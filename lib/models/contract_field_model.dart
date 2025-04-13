@@ -11,7 +11,7 @@ class ContractField {
   final String key;
 
   @HiveField(2)
-  final String type; // e.g., text, number, date
+  final String type;
 
   @HiveField(3)
   final bool required;
