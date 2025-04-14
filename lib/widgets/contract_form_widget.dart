@@ -8,10 +8,10 @@ class ContractFormWidget extends StatefulWidget {
   const ContractFormWidget({super.key, this.template, this.initialData});
 
   @override
-  _ContractFormWidgetState createState() => _ContractFormWidgetState();
+  ContractFormWidgetState createState() => ContractFormWidgetState();
 }
 
-class _ContractFormWidgetState extends State<ContractFormWidget> {
+class ContractFormWidgetState extends State<ContractFormWidget> {
   final _formKey = GlobalKey<FormState>();
   List<Widget> _formFields = [];
   Map<String, TextEditingController> _textControllers = {};

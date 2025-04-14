@@ -91,12 +91,7 @@ class MyApp extends StatelessWidget {
         fontWeight: FontWeight.w600,
         color: isDark ? const Color(0xFF70BF89) : darkGreenSwatch,
       ),
-      titleMedium: TextStyle(
-        fontSize: 18,
-        fontWeight: FontWeight.w500,
-        color: isDark ? Colors.white : Colors.black87,
-      ),
-      titleMedium: TextStyle( // Added subtitle1 for consistency
+      titleMedium: TextStyle( // This is the one you should keep (or adjust)
         fontSize: 16,
         color: isDark ? Colors.grey[400] : Colors.grey[600],
       ),

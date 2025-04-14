@@ -209,7 +209,7 @@ class _ContractScreenState extends State<ContractScreen>
                   ),
                 ),
                 onPressed: () async {
-                  if (_formKey.currentState != null && _formKey.currentState!.validate()) {
+                  if (_formKey.currentState != null && _formKey.currentState!.validateForm()) {
                     final formData = _formKey.currentState!.getFormData();
                     final contractId = const Uuid().v4();
                     final now = DateTime.now();
@@ -218,12 +218,12 @@ class _ContractScreenState extends State<ContractScreen>
                     final contract = Contract(
                       id: contractId,
                       title: _selectedTemplate?.title ?? 'Custom Contract - $formattedDate',
-                      type: _selectedTemplate?.type ?? 'General', // Provided the 'type'
+                      type: _selectedTemplate?.type ?? 'General',
                       createdAt: now,
                       templateId: _selectedTemplate?.id,
                       data: formData,
                       fields: formData,
-                      parties: [], // Initialize parties as needed
+                      parties: [],
                       signatures: {},
                       logo: null,
                       photos: [],
@@ -232,7 +232,7 @@ class _ContractScreenState extends State<ContractScreen>
                     await StorageHelper.saveContract(contract);
                     final pdfFile = await PdfHelper.generatePdf(formData);
                     print('PDF generated at: ${pdfFile.path}');
-                    Navigator.pushNamed(context, '/preview'); // You might want to pass the contract or PDF file here
+                    Navigator.pushNamed(context, '/preview');
                   }
                 },
                 child: const Text(
