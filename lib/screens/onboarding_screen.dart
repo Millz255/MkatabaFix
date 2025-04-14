@@ -6,6 +6,8 @@ import 'package:mkatabafix_app/models/user_profile_model.dart'; // Assuming this
 import 'package:hive_flutter/hive_flutter.dart'; // For Hive
 
 class OnboardingScreen extends StatefulWidget {
+  const OnboardingScreen({super.key});
+
   @override
   _OnboardingScreenState createState() => _OnboardingScreenState();
 }
@@ -52,7 +54,6 @@ class _OnboardingScreenState extends State<OnboardingScreen>
   Future<void> _saveProfileAndNavigate() async {
     if (_formKey.currentState!.validate()) {
       final fullName = _fullNameController.text.trim();
-      // Convert File to Uint8List for storing in Hive
       List<int>? imageBytes;
       if (_profileImage != null) {
         imageBytes = await _profileImage!.readAsBytes();
@@ -63,138 +64,142 @@ class _OnboardingScreenState extends State<OnboardingScreen>
         profileImage: imageBytes != null ? Uint8List.fromList(imageBytes) : null,
       );
 
-      // Store user profile in Hive
-      final userProfileBox = await Hive.openBox<UserProfile>('userProfileBox');
-      await userProfileBox.put('user', userProfile); // Assuming a single user
+      final userProfileBox = Hive.box<UserProfile>('userProfileBox');
+      await userProfileBox.put('user', userProfile);
 
-      // Navigate to Home Screen
-      Navigator.pushReplacementNamed(context, '/home'); // Assuming '/home' is the route for HomeScreen
+      Navigator.pushReplacementNamed(context, '/home');
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context); // To access default theme colors
+    final theme = Theme.of(context);
 
     return Scaffold(
-      body: AnimatedOpacity(
-        opacity: _fadeAnimation.value,
-        duration: const Duration(milliseconds: 500),
-        child: Center(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.all(32.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                // Animated logo or app title (replace with your actual logo)
-                FadeTransition(
-                  opacity: _fadeAnimation,
-                  child: const Text(
-                    'MkatabaFix',
-                    style: TextStyle(
-                      fontSize: 48.0,
-                      fontWeight: FontWeight.bold,
-                      // You can add your font family here once defined in main.dart
-                    ),
-                  ),
+      body: FadeTransition(
+        opacity: _fadeAnimation,
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(32.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              // App Title
+              Text(
+                'Welcome to MkatabaFix',
+                style: theme.textTheme.displayLarge?.copyWith(
+                  color: theme.colorScheme.primary,
                 ),
-                const SizedBox(height: 40.0),
-                GestureDetector(
-                  onTap: () {
-                    showModalBottomSheet(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return SafeArea(
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              ListTile(
-                                leading: const Icon(Icons.camera_alt),
-                                title: const Text('Take a picture'),
-                                onTap: () {
-                                  Navigator.pop(context);
-                                  _pickImage(ImageSource.camera);
-                                },
-                              ),
-                              ListTile(
-                                leading: const Icon(Icons.photo_library),
-                                title: const Text('Choose from gallery'),
-                                onTap: () {
-                                  Navigator.pop(context);
-                                  _pickImage(ImageSource.gallery);
-                                },
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                    );
-                  },
-                  child: Stack(
-                    children: <Widget>[
-                      CircleAvatar(
-                        radius: 60.0,
-                        backgroundColor: theme.primaryColorLight, // Placeholder color
-                        backgroundImage:
-                            _profileImage != null ? FileImage(_profileImage!) : null,
-                        child: _profileImage == null
-                            ? Icon(Icons.person, size: 60.0, color: Colors.white)
-                            : null,
-                      ),
-                      Positioned(
-                        bottom: 0,
-                        right: 0,
-                        child: Container(
-                          padding: const EdgeInsets.all(4.0),
-                          decoration: BoxDecoration(
-                            color: theme.primaryColor, // Placeholder color
-                            shape: BoxShape.circle,
-                          ),
-                          child: const Icon(Icons.edit, size: 20.0, color: Colors.white),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 16.0),
+              Text(
+                'Let\'s set up your profile to get started.',
+                style: theme.textTheme.bodyMedium,
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 40.0),
+
+              // Profile Picture Selection
+              GestureDetector(
+                onTap: () {
+                  showModalBottomSheet(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return SafeArea(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            ListTile(
+                              leading: const Icon(Icons.camera_alt),
+                              title: const Text('Take a picture'),
+                              onTap: () {
+                                Navigator.pop(context);
+                                _pickImage(ImageSource.camera);
+                              },
+                            ),
+                            ListTile(
+                              leading: const Icon(Icons.photo_library),
+                              title: const Text('Choose from gallery'),
+                              onTap: () {
+                                Navigator.pop(context);
+                                _pickImage(ImageSource.gallery);
+                              },
+                            ),
+                          ],
                         ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 30.0),
-                Form(
-                  key: _formKey,
-                  child: TextFormField(
-                    controller: _fullNameController,
-                    decoration: InputDecoration(
-                      labelText: 'Full Name',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12.0),
-                      ),
-                      prefixIcon: const Icon(Icons.person_outline),
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter your full name';
-                      }
-                      return null;
+                      );
                     },
-                  ),
+                  );
+                },
+                child: Stack(
+                  children: <Widget>[
+                    CircleAvatar(
+                      radius: 70.0,
+                      backgroundColor: theme.colorScheme.primary.withOpacity(0.2),
+                      backgroundImage:
+                          _profileImage != null ? FileImage(_profileImage!) : null,
+                      child: _profileImage == null
+                          ? Icon(Icons.person, size: 70.0, color: theme.colorScheme.primary)
+                          : null,
+                    ),
+                    Positioned(
+                      bottom: 0,
+                      right: 0,
+                      child: Container(
+                        padding: const EdgeInsets.all(6.0),
+                        decoration: BoxDecoration(
+                          color: theme.colorScheme.secondary,
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(Icons.edit, size: 24.0, color: theme.colorScheme.onSecondary),
+                      ),
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 40.0),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: theme.primaryColor, // Placeholder color
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 50.0, vertical: 16.0),
-                    textStyle: const TextStyle(fontSize: 18.0),
-                    shape: RoundedRectangleBorder(
+              ),
+              const SizedBox(height: 40.0),
+
+              // Full Name Input
+              Form(
+                key: _formKey,
+                child: TextFormField(
+                  controller: _fullNameController,
+                  decoration: InputDecoration(
+                    labelText: 'Full Name',
+                    border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12.0),
                     ),
+                    prefixIcon: const Icon(Icons.person_outline),
                   ),
-                  onPressed: _saveProfileAndNavigate,
-                  child: const Text(
-                    'Continue',
-                    style: TextStyle(color: Colors.white),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your full name';
+                    }
+                    return null;
+                  },
+                ),
+              ),
+              const SizedBox(height: 40.0),
+
+              // Continue Button
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: theme.colorScheme.primary,
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 60.0, vertical: 18.0),
+                  textStyle: const TextStyle(fontSize: 18.0),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12.0),
                   ),
                 ),
-              ],
-            ),
+                onPressed: _saveProfileAndNavigate,
+                child: Text(
+                  'Continue',
+                  style: TextStyle(color: theme.colorScheme.onPrimary),
+                ),
+              ),
+            ],
           ),
         ),
       ),
