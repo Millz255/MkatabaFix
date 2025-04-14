@@ -1,14 +1,20 @@
+import 'dart:io';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:mkatabafix_app/widgets/contract_form_widget.dart';
 import 'package:mkatabafix_app/services/template_service.dart';
 import 'package:mkatabafix_app/helpers/storage_helper.dart';
 import 'package:mkatabafix_app/helpers/pdf_helper.dart';
 import 'package:intl/intl.dart';
 import 'package:mkatabafix_app/models/contract_template_model.dart';
-import 'package:mkatabafix_app/models/contract_model.dart'; // Assuming this path
-import 'package:uuid/uuid.dart'; // For generating unique contract IDs
+import 'package:mkatabafix_app/models/contract_model.dart';
+import 'package:uuid/uuid.dart';
 
 class ContractScreen extends StatefulWidget {
+  const ContractScreen({super.key});
+
   @override
   _ContractScreenState createState() => _ContractScreenState();
 }
@@ -17,10 +23,15 @@ class _ContractScreenState extends State<ContractScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
-  int _selectedIndex = 1; // Index for Contract Screen in BottomNav
   ContractTemplate? _selectedTemplate;
   final TemplateService _templateService = TemplateService();
   final _formKey = GlobalKey<ContractFormWidgetState>();
+  bool _showCustomContractForm = false;
+
+  // Image handling
+  XFile? _logoImage;
+  List<XFile> _contractImages = [];
+  final TextEditingController _contractTextController = TextEditingController();
 
   @override
   void initState() {
@@ -34,12 +45,13 @@ class _ContractScreenState extends State<ContractScreen>
     );
     _animationController.forward();
 
-    // Check if a template was passed as an argument
     Future.delayed(Duration.zero, () {
-      final template = ModalRoute.of(context)?.settings.arguments as ContractTemplate?;
+      final template =
+          ModalRoute.of(context)?.settings.arguments as ContractTemplate?;
       if (template != null) {
         setState(() {
           _selectedTemplate = template;
+          _showCustomContractForm = true;
         });
       }
     });
@@ -48,48 +60,264 @@ class _ContractScreenState extends State<ContractScreen>
   @override
   void dispose() {
     _animationController.dispose();
+    _contractTextController.dispose();
     super.dispose();
   }
 
-  void _changeTab(int index) {
-    setState(() {
-      _selectedIndex = index;
-      switch (index) {
-        case 0:
-          Navigator.pushReplacementNamed(context, '/home');
-          break;
-        case 1:
-          // Current screen
-          break;
-        case 2:
-          Navigator.pushReplacementNamed(context, '/templates');
-          break;
-        case 3:
-          Navigator.pushReplacementNamed(context, '/preview'); // Placeholder route
-          break;
-        case 4:
-          Navigator.pushReplacementNamed(context, '/settings');
-          break;
-      }
-    });
+  Future<void> _pickImage(bool isLogo) async {
+    final picker = ImagePicker();
+    final image = await picker.pickImage(source: ImageSource.gallery);
+
+    if (image != null) {
+      setState(() {
+        if (isLogo) {
+          _logoImage = image;
+        } else {
+          _contractImages.add(image);
+        }
+      });
+    }
   }
 
-  Widget _buildCard({required Widget child, VoidCallback? onTap}) {
+  Widget _buildImagePreview() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (_logoImage != null) ...[
+          Padding(
+            padding: const EdgeInsets.only(bottom: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Container(
+                  width: 100,
+                  height: 50,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: FileImage(File(_logoImage!.path)),
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+        if (_contractImages.isNotEmpty) ...[
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: _contractImages.map((image) {
+              return Stack(
+                children: [
+                  Container(
+                    width: 80,
+                    height: 80,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: FileImage(File(image.path)),
+                        fit: BoxFit.cover,
+                      ),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                  Positioned(
+                    right: 0,
+                    top: 0,
+                    child: IconButton(
+                      icon: const Icon(Icons.close, size: 20),
+                      onPressed: () {
+                        setState(() {
+                          _contractImages.remove(image);
+                        });
+                      },
+                    ),
+                  ),
+                ],
+              );
+            }).toList(),
+          ),
+        ],
+      ],
+    );
+  }
+
+  Widget _buildContractTypeCard(ThemeData theme) {
     return Card(
-      elevation: 4.0,
-      margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+      elevation: 4,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(15.0),
+        borderRadius: BorderRadius.circular(15),
       ),
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(15.0),
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: child,
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('Choose Contract Type', style: theme.textTheme.titleMedium),
+            const SizedBox(height: 10),
+            ListTile(
+              leading: Icon(Icons.folder_open_outlined,
+                  color: theme.colorScheme.primary),
+              title: Text(
+                _selectedTemplate == null
+                    ? 'Select a Template'
+                    : 'Template: ${_selectedTemplate!.title}',
+                style: const TextStyle(fontSize: 16),
+              ),
+              onTap: () async {
+                final selected = await Navigator.pushNamed(context, '/templates');
+                if (selected is ContractTemplate) {
+                  setState(() {
+                    _selectedTemplate = selected;
+                    _showCustomContractForm = false;
+                  });
+                }
+              },
+              trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+            ),
+            const Divider(),
+            ListTile(
+              leading: Icon(Icons.edit_outlined,
+                  color: theme.colorScheme.primary),
+              title: const Text('Create Custom Contract',
+                  style: TextStyle(fontSize: 16)),
+              onTap: () {
+                setState(() {
+                  _selectedTemplate = null;
+                  _showCustomContractForm = true;
+                });
+              },
+              trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+            ),
+          ],
         ),
       ),
     );
+  }
+
+  Widget _buildContractForm(ThemeData theme) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text('Contract Details', style: theme.textTheme.titleMedium),
+        const SizedBox(height: 10),
+        _buildImagePreview(),
+        const SizedBox(height: 10),
+        if (_showCustomContractForm)
+          SizedBox(
+            height: 300,
+            child: TextFormField(
+              controller: _contractTextController,
+              maxLines: null,
+              expands: true,
+              decoration: const InputDecoration(
+                hintText: 'Write your contract here...',
+                border: OutlineInputBorder(),
+                contentPadding: EdgeInsets.all(12),
+              ),
+            ),
+          )
+        else if (_selectedTemplate != null)
+          SizedBox(
+            height: 300,
+            child: ContractFormWidget(
+              key: _formKey,
+              template: _selectedTemplate,
+            ),
+          ),
+      ],
+    );
+  }
+
+  Widget _buildActionButton(String title, IconData icon, VoidCallback onTap) {
+    final theme = Theme.of(context);
+    return Card(
+      elevation: 4,
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15)),
+      child: ListTile(
+        leading: Icon(icon, color: theme.colorScheme.primary),
+        title: Text(title, style: const TextStyle(fontSize: 16)),
+        trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+        onTap: onTap,
+      ),
+    );
+  }
+
+  Future<Uint8List?> _getImageBytes(String? path) async {
+    if (path == null) return null;
+    return await File(path).readAsBytes();
+  }
+
+  Future<void> _saveContract() async {
+    if (_showCustomContractForm) {
+      final contractId = const Uuid().v4();
+      final now = DateTime.now();
+      final formattedDate = DateFormat('yyyy-MM-dd HH:mm:ss').format(now);
+
+      final contract = Contract(
+        id: contractId,
+        title: 'Custom Contract - $formattedDate',
+        type: 'General',
+        createdAt: now,
+        templateId: null,
+        data: {'content': _contractTextController.text},
+        fields: {},
+        parties: [],
+        signatures: {},
+        logo: await _getImageBytes(_logoImage?.path),
+        photos: await Future.wait(
+          _contractImages
+              .map((e) => _getImageBytes(e.path))
+              .where((e) => e != null)
+              .cast<Future<Uint8List>>(),
+        ),
+      );
+
+      await StorageHelper.saveContract(contract);
+      final pdfFile = await PdfHelper.generatePdf({
+        'content': _contractTextController.text,
+        'logo': await _getImageBytes(_logoImage?.path),
+        'images': await Future.wait(
+          _contractImages
+              .map((e) => _getImageBytes(e.path))
+              .where((e) => e != null)
+              .cast<Future<Uint8List>>(),
+        ),
+      });
+      print('PDF generated at: ${pdfFile.path}');
+      Navigator.pushNamed(context, '/preview');
+    } else if (_formKey.currentState != null &&
+        _formKey.currentState!.validateForm()) {
+      final formData = _formKey.currentState!.getFormData();
+      final contractId = const Uuid().v4();
+      final now = DateTime.now();
+      final formattedDate = DateFormat('yyyy-MM-dd HH:mm:ss').format(now);
+
+      final contract = Contract(
+        id: contractId,
+        title: _selectedTemplate?.title ?? 'Contract - $formattedDate',
+        type: _selectedTemplate?.type ?? 'General',
+        createdAt: now,
+        templateId: _selectedTemplate?.id,
+        data: formData,
+        fields: formData,
+        parties: [],
+        signatures: {},
+        logo: await _getImageBytes(_logoImage?.path),
+        photos: await Future.wait(
+          _contractImages
+              .map((e) => _getImageBytes(e.path))
+              .where((e) => e != null)
+              .cast<Future<Uint8List>>(),
+        ),
+      );
+
+      await StorageHelper.saveContract(contract);
+      final pdfFile = await PdfHelper.generatePdf(formData);
+      print('PDF generated at: ${pdfFile.path}');
+      Navigator.pushNamed(context, '/preview');
+    }
   }
 
   @override
@@ -97,187 +325,78 @@ class _ContractScreenState extends State<ContractScreen>
     final theme = Theme.of(context);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('New Contract'),
-      ),
-      body: AnimatedOpacity(
-        opacity: _fadeAnimation.value,
-        duration: const Duration(milliseconds: 500),
+      // Removed the AppBar
+      body: FadeTransition(
+        opacity: _fadeAnimation,
         child: SingleChildScrollView(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(16),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              _buildCard(
-                onTap: () async {
-                  final selected = await Navigator.pushNamed(context, '/templates');
-                  if (selected is ContractTemplate) {
-                    setState(() {
-                      _selectedTemplate = selected;
-                    });
-                  }
-                },
-                child: Row(
-                  children: <Widget>[
-                    Icon(Icons.folder_open_outlined, color: theme.primaryColor),
-                    const SizedBox(width: 16.0),
-                    Text(
-                      _selectedTemplate == null ? 'Select a Template' : 'Template: ${_selectedTemplate!.title}',
-                      style: const TextStyle(fontSize: 18.0),
-                    ),
-                  ],
-                ),
-              ),
-              _buildCard(
-                onTap: () {
-                  setState(() {
-                    _selectedTemplate = null; // Clear selected template for custom contract
-                  });
-                  print('Create Custom Contract tapped');
-                },
-                child: Row(
-                  children: <Widget>[
-                    Icon(Icons.edit_outlined, color: theme.primaryColor),
-                    const SizedBox(width: 16.0),
-                    const Text('Create Custom Contract', style: TextStyle(fontSize: 18.0)),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 20.0),
+            crossAxisAlignment: CrossAxisAlignment.start, // Align title to the left
+            children: [
               Text(
-                'Contract Details',
-                style: theme.textTheme.headlineSmall, // Changed headline6 to headlineSmall
+                'New Contract',
+                style: theme.textTheme.headlineSmall?.copyWith(
+                  color: theme.colorScheme.primary, // Use primary color from theme
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-              const SizedBox(height: 10.0),
-              _buildCard(
+              const SizedBox(height: 20),
+              _buildContractTypeCard(theme),
+              const SizedBox(height: 20),
+              Card(
+                elevation: 4,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15)),
                 child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: ContractFormWidget(
-                    key: _formKey,
-                    template: _selectedTemplate,
-                  ),
+                  padding: const EdgeInsets.all(16),
+                  child: _buildContractForm(theme),
                 ),
               ),
-              const SizedBox(height: 10.0),
-              _buildCard(
-                onTap: () {
-                  print('Add Parties tapped');
-                },
-                child: Row(
-                  children: <Widget>[
-                    Icon(Icons.people_outline, color: theme.primaryColor),
-                    const SizedBox(width: 16.0),
-                    const Text('Add Parties', style: TextStyle(fontSize: 18.0)),
-                  ],
-                ),
+              const SizedBox(height: 10),
+              _buildActionButton(
+                'Add Parties',
+                Icons.people_outline,
+                () => print('Add Parties tapped'),
               ),
-              const SizedBox(height: 10.0),
-              _buildCard(
-                onTap: () {
-                  print('Capture Signatures tapped');
-                },
-                child: Row(
-                  children: <Widget>[
-                    Icon(Icons.draw_outlined, color: theme.primaryColor),
-                    const SizedBox(width: 16.0),
-                    const Text('Capture Signatures', style: TextStyle(fontSize: 18.0)),
-                  ],
-                ),
+              const SizedBox(height: 10),
+              _buildActionButton(
+                'Capture Signatures',
+                Icons.draw_outlined,
+                () => print('Capture Signatures tapped'),
               ),
-              const SizedBox(height: 10.0),
-              _buildCard(
-                onTap: () {
-                  print('Add Images/Logos tapped');
-                },
-                child: Row(
-                  children: <Widget>[
-                    Icon(Icons.image_outlined, color: theme.primaryColor),
-                    const SizedBox(width: 16.0),
-                    const Text('Add Images / Logos', style: TextStyle(fontSize: 18.0)),
-                  ],
-                ),
+              const SizedBox(height: 10),
+              _buildActionButton(
+                'Add Logo',
+                Icons.image_outlined,
+                () => _pickImage(true),
               ),
-              const SizedBox(height: 30.0),
+              const SizedBox(height: 10),
+              _buildActionButton(
+                'Add Contract Images',
+                Icons.photo_library_outlined,
+                () => _pickImage(false),
+              ),
+              const SizedBox(height: 30),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: theme.primaryColor,
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 40.0, vertical: 16.0),
-                  textStyle: const TextStyle(fontSize: 18.0),
+                  backgroundColor: theme.colorScheme.primary, // Use primary color from theme
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  textStyle: const TextStyle(fontSize: 18),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12.0),
-                  ),
+                      borderRadius: BorderRadius.circular(12)),
+                  minimumSize: const Size(double.infinity, 50),
                 ),
-                onPressed: () async {
-                  if (_formKey.currentState != null && _formKey.currentState!.validateForm()) {
-                    final formData = _formKey.currentState!.getFormData();
-                    final contractId = const Uuid().v4();
-                    final now = DateTime.now();
-                    final formattedDate = DateFormat('yyyy-MM-dd HH:mm:ss').format(now);
-
-                    final contract = Contract(
-                      id: contractId,
-                      title: _selectedTemplate?.title ?? 'Custom Contract - $formattedDate',
-                      type: _selectedTemplate?.type ?? 'General',
-                      createdAt: now,
-                      templateId: _selectedTemplate?.id,
-                      data: formData,
-                      fields: formData,
-                      parties: [],
-                      signatures: {},
-                      logo: null,
-                      photos: [],
-                    );
-
-                    await StorageHelper.saveContract(contract);
-                    final pdfFile = await PdfHelper.generatePdf(formData);
-                    print('PDF generated at: ${pdfFile.path}');
-                    Navigator.pushNamed(context, '/preview');
-                  }
-                },
-                child: const Text(
+                onPressed: _saveContract,
+                child: Text(
                   'Save & Preview',
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(color: theme.colorScheme.onPrimary), // Use onPrimary color from theme
                 ),
               ),
             ],
           ),
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home_outlined),
-            activeIcon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.add_outlined),
-            activeIcon: Icon(Icons.add),
-            label: 'New',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.folder_open_outlined),
-            activeIcon: Icon(Icons.folder_open),
-            label: 'Templates',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.preview_outlined),
-            activeIcon: Icon(Icons.preview),
-            label: 'Preview',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings_outlined),
-            activeIcon: Icon(Icons.settings),
-            label: 'Settings',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: theme.primaryColor,
-        unselectedItemColor: Colors.grey,
-        onTap: _changeTab,
-        type: BottomNavigationBarType.fixed,
-      ),
+      // Removed the bottomNavigationBar
     );
   }
 }

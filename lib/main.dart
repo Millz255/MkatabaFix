@@ -21,22 +21,38 @@ void main() async {
 }
 
 
-// Custom MaterialColor for Dark Green
-const MaterialColor darkGreenSwatch = MaterialColor(
-  0xFF006400,
-  <int, Color>{
-    50: Color(0xFFE1F2E5),
-    100: Color(0xFFB3DEC0),
-    200: Color(0xFF80C899),
-    300: Color(0xFF4DB172),
-    400: Color(0xFF269F55),
-    500: Color(0xFF008F3B),
-    600: Color(0xFF007E35),
-    700: Color(0xFF00692B),
-    800: Color(0xFF005522),
-    900: Color(0xFF003A16),
-  },
-);
+  
+  const MaterialColor lightGreenSwatch = MaterialColor(
+    0xFF8BC34A, // A good starting point for a light green
+    <int, Color>{
+      50: Color(0xFFF1F8E9),
+      100: Color(0xFFDCEDC8),
+      200: Color(0xFFAED581),
+      300: Color(0xFF9CCC65),
+      400: Color(0xFF8BC34A), // Our light base
+      500: Color(0xFF689F38),
+      600: Color(0xFF558B2F),
+      700: Color(0xFF33691E),
+      800: Color(0xFF1B5E20),
+      900: Color(0xFF33691E),
+    },
+  );
+
+  const MaterialColor darkGreenSwatch = MaterialColor(
+    0xFF006400,
+    <int, Color>{
+      50: Color(0xFFE1F2E5),
+      100: Color(0xFFB3DEC0),
+      200: Color(0xFF80C899),
+      300: Color(0xFF4DB172),
+      400: Color(0xFF269F55),
+      500: Color(0xFF008F3B), // Slightly adjusted for better mid-range
+      600: Color(0xFF007E35),
+      700: Color(0xFF00692B), // Your base #006400 is close to this
+      800: Color(0xFF005522),
+      900: Color(0xFF003A16),
+    },
+  );
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
