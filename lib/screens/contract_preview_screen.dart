@@ -34,8 +34,7 @@ class _ContractPreviewScreenState extends State<ContractPreviewScreen>
     super.dispose();
   }
 
-  void _viewContract(Contract contract) async {
-    // Open the contract for preview/edit
+  void _viewContract(Contract contract) {
     Navigator.pushNamed(context, '/contract_detail', arguments: contract);
   }
 
@@ -97,7 +96,6 @@ class _ContractPreviewScreenState extends State<ContractPreviewScreen>
                     onPressed: () async {
                       final pdfFile =
                           await PdfHelper.generatePdf(contract.data ?? {});
-                      // In a real app, open the PDF viewer here
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text('PDF generated'),
@@ -166,6 +164,7 @@ class _ContractPreviewScreenState extends State<ContractPreviewScreen>
                   ),
                 );
                 Navigator.of(context).pop();
+                setState(() {}); // Refresh the UI
               },
             ),
           ],

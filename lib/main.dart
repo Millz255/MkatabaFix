@@ -6,53 +6,52 @@ import 'package:mkatabafix_app/screens/contract_screen.dart';
 import 'package:mkatabafix_app/screens/template_list_screen.dart';
 import 'package:mkatabafix_app/screens/contract_preview_screen.dart';
 import 'package:mkatabafix_app/screens/settings_screen.dart';
-import 'package:mkatabafix_app/models/user_profile_model.dart'; // Import the model
-import 'package:mkatabafix_app/models/contract_model.dart'; // Assuming this import
+import 'package:mkatabafix_app/screens/contract_detail_screen.dart'; // Add this import
+import 'package:mkatabafix_app/models/user_profile_model.dart';
+import 'package:mkatabafix_app/models/contract_model.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
-  Hive.registerAdapter(UserProfileAdapter()); // Register the UserProfile adapter
-  Hive.registerAdapter(ContractAdapter()); // Assuming you have a ContractAdapter
+  Hive.registerAdapter(UserProfileAdapter());
+  Hive.registerAdapter(ContractAdapter());
   await Hive.openBox<UserProfile>('userProfileBox');
-  await Hive.openBox<Contract>('contractsBox'); // Open the contracts box
+  await Hive.openBox<Contract>('contractsBox');
 
   runApp(const MyApp());
 }
 
+const MaterialColor lightGreenSwatch = MaterialColor(
+  0xFF8BC34A,
+  <int, Color>{
+    50: Color(0xFFF1F8E9),
+    100: Color(0xFFDCEDC8),
+    200: Color(0xFFAED581),
+    300: Color(0xFF9CCC65),
+    400: Color(0xFF8BC34A),
+    500: Color(0xFF689F38),
+    600: Color(0xFF558B2F),
+    700: Color(0xFF33691E),
+    800: Color(0xFF1B5E20),
+    900: Color(0xFF33691E),
+  },
+);
 
-  
-  const MaterialColor lightGreenSwatch = MaterialColor(
-    0xFF8BC34A, // A good starting point for a light green
-    <int, Color>{
-      50: Color(0xFFF1F8E9),
-      100: Color(0xFFDCEDC8),
-      200: Color(0xFFAED581),
-      300: Color(0xFF9CCC65),
-      400: Color(0xFF8BC34A), // Our light base
-      500: Color(0xFF689F38),
-      600: Color(0xFF558B2F),
-      700: Color(0xFF33691E),
-      800: Color(0xFF1B5E20),
-      900: Color(0xFF33691E),
-    },
-  );
-
-  const MaterialColor darkGreenSwatch = MaterialColor(
-    0xFF006400,
-    <int, Color>{
-      50: Color(0xFFE1F2E5),
-      100: Color(0xFFB3DEC0),
-      200: Color(0xFF80C899),
-      300: Color(0xFF4DB172),
-      400: Color(0xFF269F55),
-      500: Color(0xFF008F3B), // Slightly adjusted for better mid-range
-      600: Color(0xFF007E35),
-      700: Color(0xFF00692B), // Your base #006400 is close to this
-      800: Color(0xFF005522),
-      900: Color(0xFF003A16),
-    },
-  );
+const MaterialColor darkGreenSwatch = MaterialColor(
+  0xFF006400,
+  <int, Color>{
+    50: Color(0xFFE1F2E5),
+    100: Color(0xFFB3DEC0),
+    200: Color(0xFF80C899),
+    300: Color(0xFF4DB172),
+    400: Color(0xFF269F55),
+    500: Color(0xFF008F3B),
+    600: Color(0xFF007E35),
+    700: Color(0xFF00692B),
+    800: Color(0xFF005522),
+    900: Color(0xFF003A16),
+  },
+);
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -107,7 +106,7 @@ class MyApp extends StatelessWidget {
         fontWeight: FontWeight.w600,
         color: isDark ? const Color(0xFF70BF89) : darkGreenSwatch,
       ),
-      titleMedium: TextStyle( // This is the one you should keep (or adjust)
+      titleMedium: TextStyle(
         fontSize: 16,
         color: isDark ? Colors.grey[400] : Colors.grey[600],
       ),
@@ -121,7 +120,7 @@ class MyApp extends StatelessWidget {
       theme: _buildTheme(Brightness.light),
       darkTheme: _buildTheme(Brightness.dark),
       themeMode: ThemeMode.system,
-      home: const InitialScreen(), // Use InitialScreen to check for existing profile
+      home: const InitialScreen(),
       routes: {
         '/home': (context) => HomeScreen(),
         '/onboarding': (context) => OnboardingScreen(),
@@ -129,6 +128,10 @@ class MyApp extends StatelessWidget {
         '/templates': (context) => TemplateListScreen(),
         '/preview': (context) => ContractPreviewScreen(),
         '/settings': (context) => SettingsScreen(),
+        '/contract_detail': (context) {
+          final contract = ModalRoute.of(context)!.settings.arguments as Contract;
+          return ContractDetailScreen(contract: contract);
+        },
       },
     );
   }
@@ -152,7 +155,6 @@ class _InitialScreenState extends State<InitialScreen> {
     final userProfileBox = Hive.box<UserProfile>('userProfileBox');
     final userProfile = userProfileBox.get('user');
 
-    // Simulate a delay for a smoother transition
     await Future.delayed(const Duration(milliseconds: 500));
 
     if (userProfile != null) {
@@ -164,7 +166,6 @@ class _InitialScreenState extends State<InitialScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // You can show a splash screen or loading indicator here
     return const Scaffold(
       body: Center(
         child: CircularProgressIndicator(),
