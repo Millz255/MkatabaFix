@@ -10,219 +10,138 @@ class ContractPreviewScreen extends StatefulWidget {
   _ContractPreviewScreenState createState() => _ContractPreviewScreenState();
 }
 
-class _ContractPreviewScreenState extends State<ContractPreviewScreen>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _animationController;
-  late Animation<double> _fadeAnimation;
-
-  @override
-  void initState() {
-    super.initState();
-    _animationController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 500),
-    );
-    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
-    );
-    _animationController.forward();
-  }
-
-  @override
-  void dispose() {
-    _animationController.dispose();
-    super.dispose();
-  }
-
-  void _viewContract(Contract contract) {
-    Navigator.pushNamed(context, '/contract_detail', arguments: contract);
-  }
-
-  Widget _buildContractCard(Contract contract) {
-    final theme = Theme.of(context);
-    final formattedDate = DateFormat('yyyy-MM-dd').format(contract.createdAt);
-
-    return Card(
-      margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-      elevation: 2.0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12.0),
-      ),
-      color: theme.colorScheme.surfaceVariant,
-      child: InkWell(
-        borderRadius: BorderRadius.circular(12.0),
-        onTap: () => _viewContract(contract),
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Icon(
-                    Icons.description_outlined,
-                    color: theme.colorScheme.primary,
-                    size: 24,
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Text(
-                      contract.title,
-                      style: theme.textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: theme.colorScheme.onSurface,
-                      ),
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 12),
-              Text(
-                'Created: $formattedDate',
-                style: theme.textTheme.bodySmall?.copyWith(
-                  color: theme.colorScheme.onSurface.withOpacity(0.6),
-                ),
-              ),
-              const SizedBox(height: 12),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  IconButton(
-                    icon: Icon(
-                      Icons.visibility_outlined,
-                      color: theme.colorScheme.primary,
-                    ),
-                    onPressed: () async {
-                      final pdfFile =
-                          await PdfHelper.generatePdf(contract.data ?? {});
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('PDF generated'),
-                          backgroundColor: theme.colorScheme.primaryContainer,
-                        ),
-                      );
-                    },
-                  ),
-                  IconButton(
-                    icon: Icon(
-                      Icons.edit_outlined,
-                      color: theme.colorScheme.primary,
-                    ),
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/new_contract',
-                          arguments: contract);
-                    },
-                  ),
-                  IconButton(
-                    icon: Icon(
-                      Icons.delete_outline,
-                      color: theme.colorScheme.error,
-                    ),
-                    onPressed: () async {
-                      await _confirmDelete(contract);
-                    },
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Future<void> _confirmDelete(Contract contract) async {
-    final theme = Theme.of(context);
-    return showDialog<void>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Delete Contract'),
-          content: Text('Are you sure you want to delete "${contract.title}"?'),
-          actions: <Widget>[
-            TextButton(
-              style: TextButton.styleFrom(
-                foregroundColor: theme.colorScheme.onSurface,
-              ),
-              child: Text('Cancel'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            TextButton(
-              style: TextButton.styleFrom(
-                foregroundColor: theme.colorScheme.error,
-              ),
-              child: Text('Delete'),
-              onPressed: () async {
-                await StorageHelper.deleteContract(contract.id);
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text('Contract deleted'),
-                    backgroundColor: theme.colorScheme.primaryContainer,
-                  ),
-                );
-                Navigator.of(context).pop();
-                setState(() {}); // Refresh the UI
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
+class _ContractPreviewScreenState extends State<ContractPreviewScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-
     return Scaffold(
-      body: AnimatedOpacity(
-        opacity: _fadeAnimation.value,
-        duration: const Duration(milliseconds: 500),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(24, 24, 24, 16),
-              child: Text(
-                'Contract Review',
-                style: theme.textTheme.headlineSmall?.copyWith(
-                  color: theme.colorScheme.primary,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            Expanded(
-              child: ValueListenableBuilder<Box<Contract>>(
-                valueListenable:
-                    Hive.box<Contract>('contractsBox').listenable(),
-                builder: (context, box, _) {
-                  final contracts = box.values.toList().cast<Contract>();
-                  if (contracts.isEmpty) {
-                    return Center(
-                      child: Text(
-                        'No contracts found',
-                        style: theme.textTheme.bodyLarge?.copyWith(
-                          color: theme.colorScheme.onSurface.withOpacity(0.6),
-                        ),
-                      ),
-                    );
-                  }
-                  return ListView.builder(
-                    padding: const EdgeInsets.only(bottom: 16),
-                    itemCount: contracts.length,
-                    itemBuilder: (context, index) {
-                      return _buildContractCard(contracts[index]);
-                    },
-                  );
-                },
-              ),
-            ),
-          ],
-        ),
+      appBar: AppBar(
+        title: const Text('Saved Contracts'),
+        elevation: 1,
       ),
+      body: ValueListenableBuilder<Box<Contract>>(
+        valueListenable: Hive.box<Contract>('contractsBox').listenable(),
+        builder: (context, box, _) {
+          final contracts = box.values.toList().cast<Contract>();
+          if (contracts.isEmpty) {
+            return Center(
+              child: Text('No saved contracts yet.', style: theme.textTheme.titleMedium),
+            );
+          }
+          return ListView.builder(
+            itemCount: contracts.length,
+            itemBuilder: (context, index) {
+              final contract = contracts[index];
+              return _buildContractCard(contract, theme);
+            },
+          );
+        },
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home_outlined),
+            activeIcon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.add_outlined),
+            activeIcon: Icon(Icons.add),
+            label: 'New Contract',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.folder_open_outlined),
+            activeIcon: Icon(Icons.folder_open),
+            label: 'Templates',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.save_outlined),
+            activeIcon: Icon(Icons.save),
+            label: 'Saved Contracts',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings_outlined),
+            activeIcon: Icon(Icons.settings),
+            label: 'Settings',
+          ),
+        ],
+        currentIndex: 3, // Assuming 'Saved Contracts' is the 4th item (index 3)
+        selectedItemColor: theme.colorScheme.primary,
+        unselectedItemColor: Colors.grey,
+        onTap: (index) {
+          switch (index) {
+            case 0:
+              Navigator.pushReplacementNamed(context, '/home');
+              break;
+            case 1:
+              Navigator.pushNamed(context, '/new_contract');
+              break;
+            case 2:
+              Navigator.pushNamed(context, '/templates');
+              break;
+            case 3:
+              // Current screen
+              break;
+            case 4:
+              Navigator.pushNamed(context, '/settings');
+              break;
+          }
+        },
+        type: BottomNavigationBarType.fixed,
+      ),
+    );
+  }
+
+  Widget _buildContractCard(Contract contract, ThemeData theme) {
+  final formattedDate = DateFormat('yyyy-MM-dd HH:mm').format(contract.createdAt);
+  return Card(
+    elevation: 2,
+    margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+    color: Colors.white, // Explicitly set the background color of the Card
+    child: ListTile(
+      onTap: () {
+        Navigator.pushNamed(context, '/contract_details', arguments: contract);
+      },
+      leading: Icon(Icons.description_outlined, color: theme.colorScheme.secondary),
+      title: Text(
+        contract.title,
+        style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w500, color: Colors.black), // Explicitly set text color
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+      ),
+      subtitle: Text(
+        'Created on: $formattedDate',
+        style: theme.textTheme.bodySmall?.copyWith(color: Colors.grey[800]), // Explicitly set text color
+      ),
+      trailing: PopupMenuButton<String>(
+        onSelected: (value) {
+          if (value == 'edit') {
+            Navigator.pushNamed(context, '/new_contract', arguments: contract);
+          } else if (value == 'delete') {
+            _deleteContract(contract);
+          }
+        },
+        itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+          const PopupMenuItem<String>(
+            value: 'edit',
+            child: Text('Edit', style: TextStyle(color: Colors.black)), // Explicitly set text color
+          ),
+          const PopupMenuItem<String>(
+            value: 'delete',
+            child: Text('Delete', style: TextStyle(color: Colors.black)), // Explicitly set text color
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
+  void _deleteContract(Contract contract) async {
+    final box = Hive.box<Contract>('contractsBox');
+    await box.delete(contract.key);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Contract "${contract.title}" deleted successfully.')),
     );
   }
 }

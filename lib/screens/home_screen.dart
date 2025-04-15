@@ -56,39 +56,171 @@ class _HomeScreenState extends State<HomeScreen>
     });
   }
 
-  Widget _buildRecentContractCard(Contract contract) {
-    final theme = Theme.of(context);
-    final formattedDate = DateFormat('yyyy-MM-dd').format(contract.createdAt);
+  Widget _getPage(int index) {
+    switch (index) {
+      case 0:
+        return _buildHomePage();
+      case 1:
+        return ContractScreen(); // New Contract Screen
+      case 2:
+        return TemplateListScreen(); // Templates Screen
+      case 3:
+        return ContractPreviewScreen(); // Saved Contracts Screen
+      case 4:
+        return SettingsScreen(); // Settings Screen
+      default:
+        return _buildHomePage();
+    }
+  }
 
-    return Card(
-      elevation: 2.0,
-      margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12.0),
-      ),
-      child: InkWell(
-        onTap: () {
-          Navigator.pushNamed(context, '/contract_details', arguments: contract);
-        },
-        borderRadius: BorderRadius.circular(12.0),
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+  Widget _buildHomePage() {
+    final theme = Theme.of(context);
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(20.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Text(
-                contract.title,
-                style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w500),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    'Welcome, ${_userProfile?.fullName ?? 'User'}!',
+                    style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 8.0),
+                  Text(
+                    'Ready to manage your contracts?',
+                    style: theme.textTheme.titleMedium?.copyWith(color: theme.colorScheme.onBackground.withOpacity(0.6)),
+                  ),
+                ],
               ),
-              const SizedBox(height: 4.0),
-              Text(
-                'Created on: $formattedDate',
-                style: theme.textTheme.bodySmall?.copyWith(color: Colors.grey[600]),
+              CircleAvatar(
+                radius: 40.0,
+                backgroundColor: theme.colorScheme.primary.withOpacity(0.2),
+                backgroundImage: _userProfile?.profileImage != null
+                    ? MemoryImage(_userProfile!.profileImage!)
+                    : null,
+                child: _userProfile?.profileImage == null
+                    ? Icon(Icons.person_outline, size: 40.0, color: theme.colorScheme.primary)
+                    : null,
               ),
             ],
           ),
+          const SizedBox(height: 40.0),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+              _buildHomeButton(
+                icon: Icons.add_circle_outline,
+                label: 'New Contract',
+                onPressed: () {
+                  _changeTab(1); // Navigate to New Contract
+                },
+                theme: theme,
+              ),
+              _buildHomeButton(
+                icon: Icons.save_outlined,
+                label: 'Saved Contracts',
+                onPressed: () {
+                  _changeTab(3); // Navigate to Saved Contracts
+                },
+                theme: theme,
+              ),
+              _buildHomeButton(
+                icon: Icons.folder_open_outlined,
+                label: 'Templates',
+                onPressed: () {
+                  _changeTab(2); // Navigate to Templates
+                },
+                theme: theme,
+              ),
+            ],
+          ),
+          const SizedBox(height: 30.0),
+          Text(
+            'Recently Created Contracts',
+            style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 12.0),
+          ValueListenableBuilder<Box<Contract>>(
+            valueListenable: Hive.box<Contract>('contractsBox').listenable(),
+            builder: (context, box, _) {
+              final contracts = box.values.toList().cast<Contract>();
+              contracts.sort((a, b) => b.createdAt.compareTo(a.createdAt)); // Sort by creation date (newest first)
+              final recentContracts = contracts.take(3).toList(); // Display the top 3 recent contracts
+
+              if (recentContracts.isEmpty) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 16.0),
+                  child: Text('No contracts created yet.', style: theme.textTheme.bodyMedium),
+                );
+              }
+
+              return ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(), // To prevent nested scrolling
+                itemCount: recentContracts.length,
+                itemBuilder: (context, index) {
+                  return _buildRecentContractCard(recentContracts[index], theme);
+                },
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildHomeButton({
+    required IconData icon,
+    required String label,
+    required VoidCallback onPressed,
+    required ThemeData theme,
+  }) {
+    return SizedBox(
+      width: MediaQuery.of(context).size.width / 3.5,
+      child: ElevatedButton.icon(
+        onPressed: onPressed,
+        icon: Icon(icon, color: theme.colorScheme.primary),
+        label: Text(label, style: TextStyle(color: theme.colorScheme.primary)),
+        style: ElevatedButton.styleFrom(
+          backgroundColor: theme.colorScheme.primary.withOpacity(0.1),
+          padding: const EdgeInsets.symmetric(vertical: 16.0),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12.0),
+          ),
+          elevation: 0,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildRecentContractCard(Contract contract, ThemeData theme) {
+    final formattedDate = DateFormat('yyyy-MM-dd').format(contract.createdAt);
+
+    return Card(
+      elevation: 1.0,
+      margin: const EdgeInsets.symmetric(vertical: 8.0),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12.0),
+      ),
+      child: ListTile(
+        onTap: () {
+          Navigator.pushNamed(context, '/contract_details', arguments: contract);
+        },
+        leading: Icon(Icons.description_outlined, color: theme.colorScheme.secondary),
+        title: Text(
+          contract.title,
+          style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w500),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+        ),
+        subtitle: Text(
+          'Created on: $formattedDate',
+          style: theme.textTheme.bodySmall?.copyWith(color: Colors.grey[600]),
         ),
       ),
     );
@@ -97,11 +229,10 @@ class _HomeScreenState extends State<HomeScreen>
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Mkataba Fix'),
-        elevation: 1, // Subtle shadow
+        elevation: 1,
         actions: [
           IconButton(
             icon: const Icon(Icons.notifications_outlined),
@@ -114,85 +245,7 @@ class _HomeScreenState extends State<HomeScreen>
       body: AnimatedOpacity(
         opacity: _fadeAnimation.value,
         duration: const Duration(milliseconds: 500),
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        'Welcome, ${_userProfile?.fullName ?? 'User'}!',
-                        style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(height: 4.0),
-                      Text(
-                        'Ready to manage your contracts?',
-                        style: theme.textTheme.titleMedium?.copyWith(color: Colors.grey[600]),
-                      ),
-                    ],
-                  ),
-                  CircleAvatar(
-                    radius: 30.0,
-                    backgroundColor: theme.colorScheme.primary.withOpacity(0.2),
-                    backgroundImage: _userProfile?.profileImage != null
-                        ? MemoryImage(_userProfile!.profileImage!)
-                        : null,
-                    child: _userProfile?.profileImage == null
-                        ? Icon(Icons.person_outline, size: 30.0, color: theme.colorScheme.primary)
-                        : null,
-                  ),
-                ],
-              ),
-              const SizedBox(height: 24.0),
-              Text(
-                'Recently Created Contracts',
-                style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 12.0),
-              ValueListenableBuilder<Box<Contract>>(
-                valueListenable: Hive.box<Contract>('contractsBox').listenable(),
-                builder: (context, box, _) {
-                  final contracts = box.values.toList().cast<Contract>();
-                  contracts.sort((a, b) => b.createdAt.compareTo(a.createdAt)); // Sort by creation date (newest first)
-                  final recentContracts = contracts.take(3).toList(); // Display the top 3 recent contracts
-
-                  if (recentContracts.isEmpty) {
-                    return const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 8.0),
-                      child: Text('No contracts created yet.'),
-                    );
-                  }
-
-                  return ListView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(), // To prevent nested scrolling
-                    itemCount: recentContracts.length,
-                    itemBuilder: (context, index) {
-                      return _buildRecentContractCard(recentContracts[index]);
-                    },
-                  );
-                },
-              ),
-              const SizedBox(height: 16.0),
-              Align(
-                alignment: Alignment.centerRight,
-                child: TextButton(
-                  onPressed: () {
-                    _changeTab(3); // Navigate to Preview (Saved Contracts)
-                  },
-                  child: const Text('View All Contracts'),
-                ),
-              ),
-              const SizedBox(height: 24.0),
-              // Removed the individual action cards, keeping the bottom navigation
-            ],
-          ),
-        ),
+        child: _getPage(_selectedIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
@@ -204,7 +257,7 @@ class _HomeScreenState extends State<HomeScreen>
           BottomNavigationBarItem(
             icon: Icon(Icons.add_outlined),
             activeIcon: Icon(Icons.add),
-            label: 'New',
+            label: 'New Contract',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.folder_open_outlined),
@@ -212,9 +265,9 @@ class _HomeScreenState extends State<HomeScreen>
             label: 'Templates',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.preview_outlined),
-            activeIcon: Icon(Icons.preview),
-            label: 'Preview',
+            icon: Icon(Icons.save_outlined),
+            activeIcon: Icon(Icons.save),
+            label: 'Saved Contracts',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.settings_outlined),
@@ -223,28 +276,11 @@ class _HomeScreenState extends State<HomeScreen>
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Theme.of(context).colorScheme.primary,
+        selectedItemColor: theme.colorScheme.primary,
         unselectedItemColor: Colors.grey,
         onTap: (index) {
           setState(() {
             _selectedIndex = index;
-            switch (index) {
-              case 0:
-                // Current screen
-                break;
-              case 1:
-                Navigator.pushNamed(context, '/new_contract');
-                break;
-              case 2:
-                Navigator.pushNamed(context, '/templates');
-                break;
-              case 3:
-                Navigator.pushNamed(context, '/preview');
-                break;
-              case 4:
-                Navigator.pushNamed(context, '/settings');
-                break;
-            }
           });
         },
         type: BottomNavigationBarType.fixed,

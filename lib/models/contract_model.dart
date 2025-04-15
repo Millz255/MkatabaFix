@@ -5,7 +5,7 @@ import 'package:mkatabafix_app/models/contract_party_model.dart';
 part 'contract_model.g.dart';
 
 @HiveType(typeId: 2)
-class Contract {
+class Contract with HiveObject { // Add 'with HiveObject' here
   @HiveField(0)
   final String id;
   @HiveField(1)
